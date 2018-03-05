@@ -1,4 +1,4 @@
-name "hi"
+name "Laba 1"
 
 org 100h
 
