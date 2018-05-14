@@ -4,6 +4,7 @@
  
 message_input  db "Enter a line for sorting: $"
 message_output db "Result: $"
+message_error  db "Error! $"
 message_source db "Your line: $"
 endline        db 10, 13, '$'
   
@@ -32,8 +33,15 @@ start:
     output message_input 
     mov line[0], 197  
     
-    input line
-    
+    input line 
+    cmp line[3], '$'
+    je error_end
+    lea SI, line
+    inc si
+    inc si
+    jmp check_loop
+
+str:
     mov ax, 3
     int 10h  
     
@@ -43,6 +51,8 @@ start:
     int 21h  
     
     output endline
+    output endline
+    jmp main_loop
     
 main_loop:         
     mov ah, 9
@@ -56,20 +66,23 @@ main_loop:
     xor dx, dx    
     mov si, offset line + 2 ;ds:si - начало строки
     
-first_word:
+first_word:       
+    cmp byte ptr[si], 9
+    je error_end
+    
     cmp byte ptr[si], ' ' 
     jne check_compare ;если символ не пробел
     inc si
     
     cmp byte ptr[si], 13
     je the_end ;если конец строки - к концу программы
-    
+                      
     jmp first_word
      
 loop_per_line:
     inc si
     cmp byte ptr[si], ' '
-    je check_whitespace ;если символы равны
+    je check_whitespace ;если пробел
     cmp byte ptr[si], 13 
     jne loop_per_line 
     cmp ax, 0
@@ -151,7 +164,7 @@ loop4:
     mov si, di
     mov dx, si
     dec si
-loop5: ;первое слово на первое из стека
+loop5: ;первое слово на второе из стека
     inc si
     cmp byte ptr[si], 13
     je main_loop
@@ -170,6 +183,25 @@ loop6:
     mov dx, 1
     xor cx, cx
     jmp loop_per_line 
+    
+check_loop:      
+     cmp [si], 9
+     je tab_to_space
+     inc si  
+     
+     cmp [si], '$'
+     jne check_loop
+     jmp str
+               
+tab_to_space:
+    mov [si], 32
+    jmp check_loop
+                   
+error_end:   
+    mov ax, 3
+    int 10h
+    output message_error
+    jmp endend  
         
 the_end:   
     output endline
@@ -181,4 +213,7 @@ the_end:
     
     mov ah, 4Ch
     int 21h
+    jmp endend
+    
+endend:
 end start
