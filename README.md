@@ -25,7 +25,7 @@
 ### [Лабораторная работа №1](https://github.com/Bulbash3r/Asm-Labs/tree/master/Laba%201)
 *Вариант 1:* Написать программу "Hello, world!". 
 
-### [Лабораторная работа №2](https://github.com/Bulbash3r/Asm-Labs/tree/master/Laba%202%20(sort%20string%20for%20ASCII))
+### [Лабораторная работа №2](https://github.com/Bulbash3r/Asm-Labs/tree/master/Laba%202)
 *Вариант 5:* Отсортировать слова в строке по значению ASCII символов. 
 
 ### [Лабораторная работа №3](https://github.com/Bulbash3r/Asm-Labs/tree/master/Laba%203)
